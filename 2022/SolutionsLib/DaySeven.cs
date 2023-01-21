@@ -7,6 +7,7 @@ public class DaySeven
 {
     public Tree structure = new Tree { Root = new TreeNode("/", 0, null) };
     public Stack<string> currentDirectory = new Stack<string>();
+    public IDictionary<string, int> directories = new Dictionary<string, int>();
 
     public DaySeven()
     {
@@ -31,25 +32,21 @@ public class DaySeven
             switch (command)
             {
                 case "cd":
-                    // Console.WriteLine("Changing directory");
                     string nav = split[2];
                     ChangeDirectory(nav);
                     index++;
                     break;
                 case "ls":
-                    // Console.WriteLine("Processing ls command...");
                     TreeNode current = GetCurrentDirectory();
                     List<TreeNode> children = new List<TreeNode>();
                     string[] file = input[++index].Split(" ");
 
-                    while (!file[0].Equals("$") && index < input.Length - 1)
+                    while (!file[0].Equals("$"))
                     {
-                        //TODO: Not reading last file
-                        // Add files and directories to children
                         string filename = file[1];
                         int data;
-                        Console.WriteLine($"Current line: {file[0]} {file[1]}");
-                        // Console.WriteLine(file[0].Equals("dir"));
+
+                        // Check if the file is a directory
                         if (file[0].Equals("dir"))
                         {
                             data = 0;
@@ -59,7 +56,14 @@ public class DaySeven
                             data = Convert.ToInt32(file[0]);
                         }
                         children.Add(new TreeNode(filename, data, current));
-                        file = input[++index].Split(" ");
+                        if (index < input.Length - 1)
+                        {
+                            file = input[++index].Split(" ");
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
 
                     current.Children = children;
@@ -67,7 +71,21 @@ public class DaySeven
             }
         }
 
+        // Calculate the sum of each directory
+
+
+        Console.WriteLine("Printing Tree...");
         PrintTree(structure.Root);
+    }
+
+    public int CalculateDirectoryTotal()
+    {
+        Stack<string> dir = new Stack<string>();
+        TreeNode current = structure.Root;
+        
+        
+
+        return 0;
     }
 
     public void PrintTree(TreeNode current)
@@ -76,7 +94,6 @@ public class DaySeven
         {
             return;
         }
-        // Console.WriteLine("Printing Tree...");
         foreach (TreeNode child in current.Children)
         {
             child.PrintChildren();
@@ -86,7 +103,7 @@ public class DaySeven
 
     public void ChangeDirectory(string nav)
     {
-        Console.WriteLine("Changing directory...");
+        // Console.WriteLine("Changing directory...");
         switch (nav)
         {
             case "/":
@@ -112,9 +129,6 @@ public class DaySeven
         {
             TreeNode current = this.structure.Root;
             string[] pathToNode = currentDirectory.ToArray();
-            // for (int i = pathToNode.Length - 1; i >= 0; i--) {
-            //     Console.WriteLine(pathToNode[i]);
-            // }
             int currentPathStep = pathToNode.Length - 1;
             while (!current.Filename.Equals(currentDirectory.Peek()))
             {
