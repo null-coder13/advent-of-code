@@ -7,6 +7,8 @@ global using SolutionLib;
 // DayThree dayThree = new DayThree();
 // DayFive dayFour = new DayFive();
 // DaySix daySix = new DaySix();
-DaySeven daySeven = new DaySeven();
+// DaySeven daySeven = new DaySeven();
+// DayEight eight = new DayEight();
+DayNine night = new DayNine();
 
 Console.WriteLine("Program complete");
